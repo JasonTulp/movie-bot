@@ -1,3 +1,8 @@
+### Overview
+This project is a simple front-end that allows you to interact with a Radarr instance using a custom model created with Ollama.
+It allows you to ask the model for movie recommendations, then request that any recommendations get downloaded.
+If the model sends any download requests, this app will intercept it and send that request to Radarr for processing.
+
 ### Creating the custom model with Ollama.
 In the bot.modelfile file there are some system commands that tell the LLM how to behave. 
 The important part is how it handles the request to download movies. We need these names
