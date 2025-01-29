@@ -43,3 +43,11 @@ docker run -p 3000:3000 \
   -e VITE_OLLAMA_API_URL=http://localhost:11434 \
   movie-bot
 ```
+
+### Building a docker image
+To build a docker image for a linux host, run the following commands:
+```bash
+docker build --platform linux/amd64 -t movie-bot .
+docker tag movie-bot <username>/movie-bot:latest
+docker push <username>/movie-bot:latest
+```
