@@ -21,6 +21,10 @@ const RADARR_API_URL = import.meta.env.VITE_RADARR_API_URL;
 
 // Function to search for a movie in Radarr by title and request it to be downloaded
 async function requestMoviesFromRadarr(movieTitles: string[]): Promise<void> {
+    if (movieTitles.length > 5) {
+        appendMessage("error", `Oi! You tryna clog up my server? Not today buddy!`);
+        return;
+    }
     for (const title of movieTitles) {
         try {
             console.log("searching for movie: ", title);
@@ -32,6 +36,7 @@ async function requestMoviesFromRadarr(movieTitles: string[]): Promise<void> {
             // Step 2: Check if any movie was found
             if (movies.length === 0) {
                 console.log(`Movie not found: ${title}`);
+                appendMessage("error", `Could not find: ${title}`);
                 continue;
             }
 
@@ -79,11 +84,11 @@ async function sendMessage() {
     const userMessage = userInput.value.trim();
     if (!userMessage) return;
 
-    console.log("User message:", userMessage);
+    // console.log("User message:", userMessage);
     // Add user message to history
     conversationHistory.push({ role: "user", content: userMessage });
 
-    console.log("Conversation:", conversationHistory);
+    // console.log("Conversation:", conversationHistory);
     appendMessage("user", userMessage);
     userInput.value = "";
 
@@ -103,7 +108,12 @@ async function sendMessage() {
                 hasMessageElement = true;
             }
             if (messageElement) {
+                const atBottom = chatContainer.scrollTop === chatContainer.scrollHeight - chatContainer.clientHeight;
                 messageElement.innerHTML = convertToMarkdown(accumulatedResponse);
+                if (atBottom) {
+                    // Only move chat container to bottom if we were at the bottom to start with
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
             }
         }
 
